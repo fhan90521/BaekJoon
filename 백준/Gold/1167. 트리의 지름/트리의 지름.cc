@@ -59,7 +59,6 @@ int main()
 	}
 	
 	dfs(1,0);
-	fill(visited.begin(), visited.end(), false);
 	dfs(far_node, 0);
 	
 

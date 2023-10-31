@@ -27,6 +27,7 @@ void dfs(int curN,int cost)
 			dfs(other_cost.first, cost + other_cost.second);
 		}
 	}
+	visited[curN] = false;
 }
 
 int main()
@@ -52,7 +53,6 @@ int main()
 			}
 			cin >> cost;
 			g_graph[n].push_back(make_pair(other, cost));
-			g_graph[other].push_back(make_pair(n, cost));
 			//g_costMap[make_pair(n, other)] = cost;
 			//g_costMap[make_pair(other, n)] = cost;
 		}

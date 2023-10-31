@@ -16,28 +16,18 @@ struct Node
 	int moveLen;
 	int remainLen;
 };
-struct cmp
-{
-	bool operator()(Node* a, Node* b)
-	{
-		if (a->moveLen + a->remainLen == b->moveLen + b->remainLen)
-		{
-			return  a->remainLen > b->remainLen;
-		}
-		return a->moveLen + a->remainLen > b->moveLen + b->remainLen;
-	}
-};
 int n, m;
 vector<vector<int>> g_miro;
-priority_queue < Node*, vector<Node*>, cmp> g_queue;
+queue <Node*> g_queue;
 
-void MakeNode(Node* pPrevNode,int x,int y)
+void MakeNode(Node* pPrevNode, int x, int y)
 {
 	Node* pNewNode = new Node;
 	pNewNode->moveLen = pPrevNode->moveLen + 1;
 	pNewNode->x = x;
 	pNewNode->y = y;
 	pNewNode->remainLen = abs(n - pNewNode->y) + abs(m - pNewNode->x);
+	g_miro[pNewNode->y][pNewNode->x] = 0;
 	g_queue.push(pNewNode);
 }
 int main()
@@ -46,37 +36,36 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	
+
 	cin >> n >> m;
-	g_miro = vector<vector<int>>(n+2, vector<int>(m+2,0));
+	g_miro = vector<vector<int>>(n + 2, vector<int>(m + 2, 0));
 	for (int i = 0; i < n; i++)
 	{
 		string str;
 		cin >> str;
 		for (int j = 0; j < str.size(); j++)
 		{
-			g_miro[i + 1][j + 1] = str[j]-'0';
+			g_miro[i + 1][j + 1] = str[j] - '0';
 		}
 	}
-	int answer=0;
+	int answer = 0;
 	Node* pStartNode = new Node;
 	pStartNode->moveLen = 0;
 	pStartNode->remainLen = n + m;
 	pStartNode->x = 1;
 	pStartNode->y = 1;
 	g_queue.push(pStartNode);
-	
-	while (g_queue.size()>0)
+
+	while (g_queue.size() > 0)
 	{
-		Node* pCurNode= g_queue.top();
+		Node* pCurNode = g_queue.front();
 		g_queue.pop();
-		g_miro[pCurNode->y][pCurNode->x] = 0;
 		if (pCurNode->x == m && pCurNode->y == n)
 		{
 			answer = pCurNode->moveLen;
 			break;
 		}
-		
+
 		if (g_miro[pCurNode->y - 1][pCurNode->x])
 		{
 			MakeNode(pCurNode, pCurNode->x, pCurNode->y - 1);
@@ -85,16 +74,16 @@ int main()
 		{
 			MakeNode(pCurNode, pCurNode->x, pCurNode->y + 1);
 		}
-		if (g_miro[pCurNode->y][pCurNode->x-1])
+		if (g_miro[pCurNode->y][pCurNode->x - 1])
 		{
-			MakeNode(pCurNode, pCurNode->x-1, pCurNode->y);
+			MakeNode(pCurNode, pCurNode->x - 1, pCurNode->y);
 		}
-		if (g_miro[pCurNode->y][pCurNode->x+1])
+		if (g_miro[pCurNode->y][pCurNode->x + 1])
 		{
 			MakeNode(pCurNode, pCurNode->x + 1, pCurNode->y);
 		}
 	}
-	cout << answer+1 << '\n';
+	cout << answer + 1 << '\n';
 
 }
 

@@ -36,10 +36,6 @@ int main()
 		g_graph[startN].push_back(make_pair(endN, cost));
 		
 	}
-	for (int i = 1; i <= V; i++)
-	{
-		p_queue.push(make_pair(i, INT32_MAX));
-	}
 	D[startN] = 0;
 	int curN = startN;
 	visited[curN] = true;

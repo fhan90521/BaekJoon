@@ -5,8 +5,8 @@
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 using namespace std;
-vector<vector<pair<int,int>>> g_graph;
-vector<unsigned int> D;
+vector<vector<pair<int, int>>> g_graph;
+vector<int> D;
 vector<bool> visited;
 struct cmp
 {
@@ -15,7 +15,7 @@ struct cmp
 		return a.second > b.second;
 	}
 };
-priority_queue<pair<int, int>,vector<pair<int,int>>,cmp> p_queue;
+priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> p_queue;
 
 int main()
 {
@@ -26,43 +26,40 @@ int main()
 	cin >> V >> E;
 	int startN;
 	cin >> startN;
-	g_graph = vector<vector<pair<int,int>>>(V + 1);
-	D = vector<unsigned int>(V + 1,INT32_MAX);
+	g_graph = vector<vector<pair<int, int>>>(V + 1);
+	D = vector<int>(V + 1, INT_MAX);
 	visited = vector<bool>(V + 1);
 	for (int i = 1; i <= E; i++)
 	{
 		int startN, endN, cost;
 		cin >> startN >> endN >> cost;
 		g_graph[startN].push_back(make_pair(endN, cost));
-		
+
 	}
 	D[startN] = 0;
-	int curN = startN;
-	visited[curN] = true;
-	
-	for (int i = 0; i < V; i++)
+	p_queue.push(make_pair(startN,0));
+	while (!p_queue.empty())
 	{
-		for (auto neighbor : g_graph[curN])
+		auto curN_cost = p_queue.top();
+		p_queue.pop();
+		if (visited[curN_cost.first] == true)
 		{
-			D[neighbor.first] = MIN(D[neighbor.first],D[curN]+neighbor.second);
-			p_queue.push(make_pair(neighbor.first, D[neighbor.first]));
+			continue;
 		}
-		while (!p_queue.empty())
+		visited[curN_cost.first] = true;
+		for (auto next_cost : g_graph[curN_cost.first])
 		{
-			auto n_cost = p_queue.top();
-			p_queue.pop();
-			if (visited[n_cost.first] == false)
+			if (D[next_cost.first] > D[curN_cost.first] + next_cost.second)
 			{
-				curN = n_cost.first;
-				visited[curN] = true;
-				break;
+				D[next_cost.first] = D[curN_cost.first] + next_cost.second;
+				p_queue.push(make_pair(next_cost.first, D[next_cost.first]));
 			}
 		}
 	}
 
-	for (int i =1 ;i<=V;i++)
+	for (int i = 1; i <= V; i++)
 	{
-		if (D[i] == INT32_MAX)
+		if (D[i] == INT_MAX)
 		{
 			cout << "INF" << '\n';
 		}

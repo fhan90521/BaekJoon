@@ -12,36 +12,15 @@ using namespace std;
 map<pair<int,int>,int> edgesMap;
 vector<set<int>> endToStartMap;
 vector<long long> distanceMap;
-vector<vector<int>> g_graph;
-vector<bool> visited;
-int N, startN, endN, M;
-bool finded = false;
-void dfs_findEnd(int curN)
-{
-	if (curN == endN)
-	{
-		finded = true;
-		return;
-	}
-	visited[curN] = true;
-	for (int neighbor : g_graph[curN])
-	{
-		if (visited[neighbor] == false&& finded == false)
-		{
-			dfs_findEnd(neighbor);
-		}
-	}
-}
 int main()
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+	int N, startN, endN, M;
 	cin >> N >> startN >> endN >> M;
 	endToStartMap = vector<set<int>>(N);
 	distanceMap = vector<long long>(N,INT_MAX);
-	g_graph = vector<vector<int>>(N);
-	visited = vector<bool>(N);
 	distanceMap[startN] = 0;
 	for (int i = 0; i < M; i++)
 	{
@@ -60,7 +39,6 @@ int main()
 				edgesMap[tmp] = cost;
 			}
 		}
-		g_graph[s].push_back(e);
 	}
 
 	for (int e = 0; e < N; e++)
@@ -96,26 +74,30 @@ int main()
 	}
 
 	bool minusLoop = false;
-	
-	for (auto& tmp : edgesMap)
+	for (int i = 0; i <N*N; i++)
 	{
-		int s, e, cost;
-		s = tmp.first.first;
-		e = tmp.first.second;
-		cost = tmp.second;
-		if (distanceMap[s] != INT_MAX && distanceMap[e] > distanceMap[s] + cost)
+		for (auto& tmp : edgesMap)
 		{
-			fill(visited.begin(), visited.end(), false);
-			finded = false;
-			dfs_findEnd(e);
-			if (finded)
+			int s, e, cost;
+			s = tmp.first.first;
+			e = tmp.first.second;
+			cost = tmp.second;
+			if (distanceMap[s] != INT_MAX && (distanceMap[e]==INT_MIN||
+                                              distanceMap[e] > distanceMap[s] + cost))
 			{
-				minusLoop = true;
-				break;
+				distanceMap[e] = INT_MIN;
+				if (e == endN)
+				{
+					minusLoop = true;
+                    break;
+				}
 			}
 		}
+        if(minusLoop)
+        {
+            break;
+        }
 	}
-
 	if (distanceMap[endN] == INT_MAX)
 	{
 		cout << "gg" << endl;

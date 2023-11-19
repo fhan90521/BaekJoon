@@ -74,7 +74,7 @@ int main()
 	}
 
 	bool minusLoop = false;
-	for (int i = 0; i <N*N; i++)
+	for (int i = 0; i <50; i++)
 	{
 		for (auto& tmp : edgesMap)
 		{

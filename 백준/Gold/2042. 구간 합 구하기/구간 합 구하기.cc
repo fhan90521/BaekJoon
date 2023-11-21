@@ -10,9 +10,9 @@ int main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	long long N, M, K;
+	long N, M, K;
 	cin >> N >> M >> K;
-	long long size = 1;
+	long size = 1;
 	while (1)
 	{
 		size *= 2;
@@ -23,20 +23,20 @@ int main()
 		}
 	}
 	sTreeVec = vector<long long>(size,0);
-	for (long long i = 0; i < N; i++)
+	for (long i = 0; i < N; i++)
 	{
-		long long n;
+		long n;
 		cin >> n;
 		sTreeVec[size / 2 + i] = n;
 	}
-	for (long long i = size/2 - 1; i >= 1; i--)
+	for (int i = size/2 - 1; i >= 1; i--)
 	{
 		sTreeVec[i] = sTreeVec[i * 2] + sTreeVec[i * 2 + 1];
 	}
 
 	for (int i = 0; i < M+K; i++)
 	{
-		long long a, b, c;
+		long a, b, c;
 		cin >> a >> b >> c;
 		if (a == 1)
 		{

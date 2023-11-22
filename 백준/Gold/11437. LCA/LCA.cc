@@ -29,6 +29,9 @@ void dfs(int curN, int parentN,int height)
 }
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
     int N;
     cin >> N;
     heightMap = vector<int>(N+1);
@@ -108,7 +111,13 @@ int main()
                 }
             }
         }
-        int k = maxK;
+        int k = -1;
+        int height = heightMap[n1];
+        while (height > 0)
+        {
+            height /= 2;
+            k++;
+        }
         while (k >= 0)
         {
             if (parentMap[k][n1] != parentMap[k][n2])

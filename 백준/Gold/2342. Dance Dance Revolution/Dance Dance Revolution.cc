@@ -4,13 +4,13 @@
 #include <iostream>
 #include <climits>
 using namespace std;
-long long dp[100010][5][5];
+long long dp[100002][5][5];
 int main()
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	fill(&dp[0][0][0], &dp[100009][4][4], INT_MAX);
+	fill(&dp[0][0][0], &dp[100001][4][4], INT_MAX);
 	dp[0][0][0] = 0;
 	int i = 1;
 	long long answer = INT_MAX;
